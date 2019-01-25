@@ -1,48 +1,45 @@
 #This is a LZW compressor that reads the '.txt' file and compresses it
 import string
 textFile = open("longJoke.txt","r")
-writeLocation = "testTXT.txt"
+writeLocation = "compressed.txt"
 stringText = textFile.read()
 textFile.close()
 #stringText += ' '
 
-bits = 10
+bits = 8
 
 
 dict = {}
 
-for x in range(0,128): #Initiates dictionary with: ascii characters as the dict key & its ascii value as the dict value
+#Initiates dictionary with: ascii characters as the dict key & its ascii value as the dict value
+for x in range(0,128):
 	dict[chr(x)] = x
-finalBinary = '' #Final binary string it outputs
 
-stringTextClone = stringText
-while (len(stringTextClone) > 0): #This determines the best amount of bits
-	if (len(dict) > 2^bits):
-		bits += 1
-	i=2
-	while (stringTextClone[0:i] in dict):
-		i+=1
-	dict[len(dict)]=stringTextClone[0:i]
-	stringTextClone = stringTextClone[i:]
+finalBinary = '' #Final binary string this script should outputs
 
+stringTextClone = stringText #Protects original text
+
+#This while loop determines the best amount of bits
 try:
-	stringTextClone = stringText
-	for counter in range(0,len(stringText)-1):
-		if (len(dict) > 2^bits):
-		bits += 1
-	i=2
-	while (stringTextClone[0:i] in dict):
-		i+=1
-	dict[len(dict)]=stringTextClone[0:i]
-	finalBinary += bin(dict[stringClone[0:i-1])[2:].rjust(bits,'0') #check this
-	stringTextClone = stringTextClone[i:]
+	while (len(stringTextClone) > 1): #while this string still has stuff in it
+		if (len(dict) > 2^bits): #if the dictionary length surpasses current bit size
+			bits += 1
+		i=2
+		while (stringTextClone[0:i] in dict):
+			i+=1
+		if i > len(stringTextClone):
+			stringTextClone = stringTextClone[i:]
+		else:
+			dict[len(dict)]=stringTextClone[0:i]
+			stringTextClone = stringTextClone[i:]
 except:
-	print('error in iterative process')
+	print('error determining best bits')
+	bits = 10
 
-log = open(writeLocation,'w')
-log.write(finalBinary)
-log.close()
-input('Finished writing to ' + writeLocation)
+
+print(bits)
+input('')
+
 
 
 
