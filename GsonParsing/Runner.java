@@ -90,8 +90,14 @@ public class Runner {
 			String json = new String(Files.readAllBytes(Paths.get("C:\\Users\\ChangJI19\\Documents\\Gson\\PopularFirstNames.json")));
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			Child[] childs = gson.fromJson(json, Child[].class);
+//			for (Child x : childs) {
+//				System.out.println(x);
+//			}
+			
 			for (Child x : childs) {
-				System.out.println(x);
+				if (x.getRank()==1) {
+					System.out.println(x); //Prints the most popular baby name
+				}
 			}
 			
 		}

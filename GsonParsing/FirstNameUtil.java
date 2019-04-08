@@ -1,3 +1,5 @@
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class FirstNameUtil {
@@ -13,14 +15,20 @@ public final class FirstNameUtil {
 	}
 	
 	
-	public String frequencyNameGenerator(String[] input) {
-//		StringBuilder output = new StringBuilder();
-		String output = "";
-		HashMap<String,Integer> map = new HashMap();
-		
-		
-		return output.toString();
-	}
+//	public String frequencyNameGenerator(String[] input) {
+////		StringBuilder output = new StringBuilder();
+//		String output = "";
+//		ArrayList<HashMap<String,Integer>> map = new ArrayList();
+//		                                                                                                                                                                                                      
+//		
+//		for (String str : input) {
+//			for (int count = 0; count < str.length(); count++) {
+//				map.get(count).put();
+//			}
+//		}
+//		
+//		return output.toString();
+//	}
 	
 	private String enbase(int x) {
 	    if (x < 26) {
