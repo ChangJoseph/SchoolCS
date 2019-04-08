@@ -5,6 +5,8 @@ List of Projects:
 - LZW Compression
 - LZW Decompression
 - LZW [De]Compression with bit size input
+- Json/Gson Learning Project
+- Geocoding & Distance Program
 
 
 ~Joseph Chang
