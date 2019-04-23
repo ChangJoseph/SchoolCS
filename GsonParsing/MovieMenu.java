@@ -12,7 +12,10 @@ public class MovieMenu {
 	
 	public static void main(String[] args) {
 		MovieMenu menu = new MovieMenu();
-		menu.process();
+		for(int count = 0; count < 2; count++) {
+			menu.process();
+		}
+		menu.end();
 	}
 	
 	// Sub Classes
@@ -54,10 +57,13 @@ public class MovieMenu {
 		public void setGenres(List<String> genres) {
 			this.genres = genres;
 		}
+		public String toString() {
+			return title+" "+year+" "+cast+" "+genres;
+		}
 	}
 	public static class MovieUtil {
 		private static List<Movie> movies;
-		private MovieUtil() {
+		public static void initializeList() {
 			try {
 				Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				String json = new String(Files.readAllBytes(Paths.get("src\\Movies.json")));
@@ -68,7 +74,11 @@ public class MovieMenu {
 			}
 		}
 		public static List<Movie> getMovies() {
+			if (movies == null) initializeList();
 			return movies;
+		}
+		public static void setMovies(List<Movie> pMovies) {
+			movies = pMovies;
 		}
 	}
 	
@@ -93,15 +103,21 @@ public class MovieMenu {
 		switch (option.toUpperCase()) {
 			case "A":
 				String aName = askPrompt("Enter an actor/actress name.");
-				lookUpPerson(aName);
+				System.out.println(lookUpPerson(aName));
 				break;
 			case "B":
 				String title = askPrompt("Enter a movie title.");
-				lookUpMovie(title);
+				System.out.println(lookUpMovie(title));
 				break;
 			case "C":
-				int year = Integer.parseInt(askPrompt("Enter a year."));
-				lookUpYear(year);
+				String yearStr = askPrompt("Enter a year.");
+				yearStr = yearStr.replaceAll("[^\\d]","");
+				if (yearStr.equals("")) {
+					System.out.println("Invalid input.");
+					break;
+				}
+				int year = Integer.parseInt(yearStr);
+				System.out.println(lookUpYear(year));
 				break;
 			case "D":
 				String dName = askPrompt("Enter a movie name.");
@@ -110,6 +126,7 @@ public class MovieMenu {
 				List<String> genres = Arrays.asList(askPrompt("Enter a list of genres separated by a comma (don't enter extra spaces).").split(","));
 				Movie movie = new Movie(dName, dYear, actors, genres);
 				addMovie(movie);
+				System.out.println(movie);
 				break;
 			case "E":
 				String eName = askPrompt("Enter an actor/actress name.");
@@ -119,7 +136,7 @@ public class MovieMenu {
 				System.out.println("Invalid option.");
 				break;
 		}
-		end();
+		System.out.println();
 	}
 	
 	private List<Movie> lookUpPerson(String name) {
@@ -131,13 +148,28 @@ public class MovieMenu {
 		}
 		return inMovies;
 	}
-	private void lookUpMovie(String name) {
-		
+	private List<Movie> lookUpMovie(String name) {
+		List<Movie> inMovies = new ArrayList<Movie>();
+		for (Movie m : MovieUtil.getMovies()) {
+			if (m.getName().equals(name)) {
+				inMovies.add(m);
+			}
+		}
+		return inMovies;
 	}
-	private void lookUpYear(int year) {
-		
+	private int lookUpYear(int year) {
+		int count = 0;
+		for (Movie m : MovieUtil.getMovies()) {
+			if (m.getYear()==year) {
+				count++;
+			}
+		}
+		return count;
 	}
 	private void addMovie(Movie movie) {
+		List<Movie> movies = new ArrayList<Movie>(MovieUtil.getMovies());
+		movies.add(movie);
+		MovieUtil.setMovies(movies);
 		
 	}
 	private int degreesToKevinBacon(String name) {
