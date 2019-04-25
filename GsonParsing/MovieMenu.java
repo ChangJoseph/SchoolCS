@@ -12,7 +12,7 @@ public class MovieMenu {
 	
 	public static void main(String[] args) {
 		MovieMenu menu = new MovieMenu();
-		for(int count = 0; count < 2; count++) {
+		while(!menu.getQuit()) {
 			menu.process();
 		}
 		menu.end();
@@ -88,8 +88,10 @@ public class MovieMenu {
 			"B) Look up a Movie Title\n" + 
 			"C) Look up a Year\n" + 
 			"D) Add a new movie\n" + 
-			"E) Degrees to Kevin Bacon\n";
+			"E) Degrees to Kevin Bacon\n" +
+			"Q) Quit Program";
 	private Scanner in = new Scanner(System.in);
+	private boolean quit = false;
 	
 	
 	
@@ -131,6 +133,10 @@ public class MovieMenu {
 			case "E":
 				String eName = askPrompt("Enter an actor/actress name.");
 				degreesToKevinBacon(eName);
+				break;
+			case "Q":
+				quit = true;
+				System.out.println("Goodbye.");
 				break;
 			default:
 				System.out.println("Invalid option.");
@@ -174,10 +180,12 @@ public class MovieMenu {
 	}
 	private int degreesToKevinBacon(String name) {
 		
-		return -1;
+		return 42;
 	}
 	private void end() {
 		in.close();
-		System.out.println("Goodbye.");
+	}
+	public boolean getQuit() {
+		return quit;
 	}
 }
